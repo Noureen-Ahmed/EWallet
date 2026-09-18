@@ -110,7 +110,7 @@
   <!-- ============================================================ -->
   <!-- VIEW: SHARED DASHBOARD (All users see this)                  -->
   <!-- ============================================================ -->
-  <div id="sharedView" hidden>
+  <div class="app-view" id="sharedView" hidden>
     <header class="app-header shared-header">
       <div class="header-nav">
         <div class="admin-profile-pill">
@@ -131,7 +131,9 @@
           </button>
         </div>
       </div>
+    </header>
 
+    <div class="scroll-content feed-scroll-content" id="feedScrollContent">
       <!-- Financial Hero Card -->
       <div class="financial-hero-card" id="financialHeroCard">
         <div class="hero-card-glow"></div>
@@ -192,9 +194,6 @@
           <span class="filter-summary-info" id="filterSummaryInfo">Showing all items</span>
         </div>
       </div>
-    </header>
-
-    <div class="scroll-content feed-scroll-content" id="feedScrollContent">
       <div class="skeleton-container" id="feedSkeleton" hidden>
         <div class="skeleton-card"></div>
         <div class="skeleton-card"></div>

@@ -139,6 +139,10 @@ async function switchView(viewName) {
   }
 
   state.activeView = viewName;
+  ['loginView', 'sharedView', 'personalView', 'addRequestView', 'weeklyView', 'settingsView'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.hidden = true; el.classList.remove('active-view'); }
+  });
   document.querySelectorAll('.app-view').forEach(v => { v.hidden = true; v.classList.remove('active-view'); });
 
   const navBar = document.getElementById('bottomNavBar');
@@ -338,10 +342,11 @@ function createAwaitingCard(item) {
         <span class="awaiting-price-badge">Awaiting Price</span>
         <div class="inline-price-entry">
           <div class="inline-price-input-wrap">
-            <input type="number" class="inline-price-input" id="price-input-${item.id}" placeholder="Enter Price" min="1">
+            <input type="number" class="inline-price-input" id="price-input-${item.id}" placeholder="Enter Price" min="0.5" step="0.5">
             <span>EGP</span>
           </div>
           <button type="button" class="inline-price-confirm-btn" data-id="${item.id}">Confirm</button>
+          <button type="button" class="feed-action-btn delete-btn" id="delAwaitingBtn-${item.id}" title="Delete Request" aria-label="Delete Request">🗑️</button>
         </div>
       </div>
     </div>`;
@@ -355,19 +360,30 @@ function createAwaitingCard(item) {
     }
     btn.disabled = true;
     await DB.updateRequestPrice(item.id, priceVal, state.currentUser.uid);
-    showToast(`Price updated for ${item.itemName}`, 'success');
+    showToast(`Price set for ${item.itemName}`, 'success');
     await renderSharedDashboard();
   });
+
+  const delBtn = card.querySelector(`#delAwaitingBtn-${item.id}`);
+  delBtn.addEventListener('click', async () => {
+    if (confirm(`Delete "${item.itemName}" from awaiting requests?`)) {
+      delBtn.disabled = true;
+      await DB.deleteRequest(item.id);
+      showToast(`Deleted request for ${item.itemName}`, 'info');
+      await renderSharedDashboard();
+    }
+  });
+
   return card;
 }
 
 
 function createCompletedCard(item) {
   const card = document.createElement('div');
-  card.className = 'feed-item-card';
+  card.className = 'feed-item-card completed-item-card';
   card.innerHTML = `
     <div class="feed-item-main">
-      <div class="feed-item-emoji-wrap" style="opacity:0.7;">${item.itemEmoji}</div>
+      <div class="feed-item-emoji-wrap" style="opacity:0.85;">${item.itemEmoji}</div>
       <div class="feed-item-details">
         <div class="feed-item-title-row">
           <h3 class="feed-item-name">${item.itemName}</h3>
@@ -376,11 +392,68 @@ function createCompletedCard(item) {
         <div class="feed-item-meta-row">
           <span>By ${item.userName}</span><span>•</span><span>${formatTime(item.boughtAt)}</span>
         </div>
+        <!-- Inline Price Edit Box -->
+        <div class="inline-edit-box" id="editBox-${item.id}" style="display:none;">
+          <div class="inline-edit-input-wrap">
+            <input type="number" class="inline-edit-input" id="editInput-${item.id}" value="${item.price}" min="0.5" step="0.5" placeholder="Price">
+            <span class="inline-edit-currency">EGP</span>
+          </div>
+          <button type="button" class="inline-save-btn" id="saveBtn-${item.id}">Save</button>
+          <button type="button" class="inline-cancel-btn" id="cancelBtn-${item.id}">✕</button>
+        </div>
       </div>
     </div>
-    <div class="feed-item-pricing">
-      <span class="feed-item-total">${formatEGP(item.totalPrice)} EGP</span>
+    <div class="feed-item-pricing" id="pricingWrap-${item.id}">
+      <span class="feed-item-total" id="priceDisplay-${item.id}">${formatEGP(item.totalPrice)} EGP</span>
+      <div class="feed-actions-group">
+        <button type="button" class="feed-action-btn edit-btn" id="editBtn-${item.id}" title="Edit Price">✏️ Edit</button>
+        <button type="button" class="feed-action-btn delete-btn" id="delBtn-${item.id}" title="Delete Item">🗑️</button>
+      </div>
     </div>`;
+
+  const editBtn = card.querySelector(`#editBtn-${item.id}`);
+  const delBtn = card.querySelector(`#delBtn-${item.id}`);
+  const editBox = card.querySelector(`#editBox-${item.id}`);
+  const editInput = card.querySelector(`#editInput-${item.id}`);
+  const saveBtn = card.querySelector(`#saveBtn-${item.id}`);
+  const cancelBtn = card.querySelector(`#cancelBtn-${item.id}`);
+
+  editBtn.addEventListener('click', () => {
+    editBox.style.display = 'flex';
+    editInput.focus();
+    editInput.select();
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    editBox.style.display = 'none';
+    editInput.value = item.price;
+  });
+
+  editInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') saveBtn.click();
+    if (e.key === 'Escape') cancelBtn.click();
+  });
+
+  saveBtn.addEventListener('click', async () => {
+    const newPrice = parseFloat(editInput.value);
+    if (isNaN(newPrice) || newPrice <= 0) {
+      showToast('Please enter a valid price.', 'error');
+      return;
+    }
+    saveBtn.disabled = true;
+    await DB.updateRequestPrice(item.id, newPrice, state.currentUser.uid);
+    showToast(`Price updated for ${item.itemName} (${formatEGP(newPrice)} EGP) ✓`, 'success');
+    await renderSharedDashboard();
+  });
+
+  delBtn.addEventListener('click', async () => {
+    if (confirm(`Delete "${item.itemName}" from shared purchases?`)) {
+      delBtn.disabled = true;
+      await DB.deleteRequest(item.id);
+      showToast(`Deleted ${item.itemName}`, 'info');
+      await renderSharedDashboard();
+    }
+  });
 
   return card;
 }
@@ -549,6 +622,7 @@ async function handleSharedQuickAdd() {
   if (!isNaN(price) && price > 0) {
     await renderSharedDashboard(); // Update dashboard totals
   }
+  await switchView('shared');
 }
 
 // ==========================================
@@ -645,6 +719,7 @@ function initEvents() {
 
   document.getElementById('openWeeklyViewBtn')?.addEventListener('click', () => switchView('weekly'));
   document.getElementById('backFromWeeklyBtn')?.addEventListener('click', () => switchView('shared'));
+  document.getElementById('backFromAddBtn')?.addEventListener('click', () => switchView('shared'));
 
   // Shared Feed
   document.getElementById('refreshFeedBtn')?.addEventListener('click', () => { showToast('Syncing feed...', 'info'); setTimeout(renderSharedDashboard, 500); });

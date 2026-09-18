@@ -158,9 +158,9 @@ const DB = (() => {
     if (!doc.exists) return null;
     const req = doc.data();
     req.price = price;
-    req.totalPrice = price * req.quantity;
+    req.totalPrice = price * (req.quantity || 1);
     req.status = 'completed';
-    req.boughtAt = new Date().toISOString();
+    req.boughtAt = req.boughtAt || new Date().toISOString();
     req.pricedBy = pricedByUid;
     await docRef.set(req);
     return req;
@@ -305,7 +305,7 @@ const DB = (() => {
   return {
     init, getAllUsers, getUserByUid, getUserByEmail, authenticateUser, changePassword,
     getSession, setSession, clearSession,
-    getAllRequests, getRequests, addRequest, updateRequestPrice, cancelRequest, reorderRequest,
+    getAllRequests, getRequests, addRequest, updateRequestPrice, cancelRequest, deleteRequest: cancelRequest, reorderRequest,
     getPersonalExpenses, addPersonalExpense, deletePersonalExpense,
     getSharedFinancials, getPersonalFinancials, getWeeklySharedFinancials, resetDB
   };
