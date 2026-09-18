@@ -47,10 +47,17 @@ const DB = (() => {
   }
   function clearSession() { localStorage.removeItem(KEYS.session); }
 
-  // ==========================================
-  // Initialization & Seeding
-  // ==========================================
   async function init() {
+    try {
+      if (typeof firebase !== 'undefined' && firebase.auth) {
+        if (!firebase.auth().currentUser) {
+          await firebase.auth().signInAnonymously();
+        }
+      }
+    } catch (authErr) {
+      console.warn('Firebase auth notice:', authErr);
+    }
+
     let snap = await firestore.collection('users').get();
     if (snap.empty) {
       const defaultUsers = [
