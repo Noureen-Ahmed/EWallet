@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Home EWallet - Shared Household Expense Tracker</title>
+  <meta name="description"
+    content="Mobile-First shared household expense tracker with personal ledger, authentication, and real-time sync.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="theme-light">
+
+  <!-- Desktop Preview Bar -->
+  <aside class="desktop-banner" id="desktopBanner">
+    <div class="banner-content">
+      <div class="badge-pill"><span class="live-dot"></span> Mobile-First Prototype</div>
+      <span class="banner-text">Home EWallet — Phase 4</span>
+      <div class="view-toggles">
+        <button id="toggleDeviceFrameBtn" class="toggle-btn active" title="Phone Frame">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+            <line x1="12" y1="18" x2="12.01" y2="18" />
+          </svg>
+          Device
+        </button>
+        <button id="toggleFullscreenBtn" class="toggle-btn" title="Fullscreen">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+          </svg>
+          Full
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="app-viewport-container" id="appViewportContainer">
+    <main class="mobile-frame" id="mobileAppFrame">
+
+      <!-- Status Bar -->
+      <div class="mobile-status-bar" aria-hidden="true">
+        <span class="time-clock" id="statusClock">09:41</span>
+        <div class="camera-island"></div>
+        <div class="status-icons">
+          <svg width="14" height="11" viewBox="0 0 16 12" fill="currentColor">
+            <path d="M1 9h2v2H1V9zm4-3h2v5H5V6zm4-3h2v8H9V3zm4-3h2v11h-2V0z" />
+          </svg>
+          <svg width="13" height="11" viewBox="0 0 16 12" fill="currentColor">
+            <path d="M8 2.5C5 2.5 2.5 4 1 5.5l7 6.5 7-6.5C13.5 4 11 2.5 8 2.5z" />
+          </svg>
+          <svg width="20" height="10" viewBox="0 0 24 12" fill="currentColor">
+            <rect x="1" y="1" width="19" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <rect x="2.5" y="2.5" width="14" height="7" rx="1.2" />
+            <path d="M22 4.5v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- VIEW: LOGIN                                                  -->
+      <!-- ============================================================ -->
+      <div class="app-view active-view" id="loginView">
+        <div class="login-scroll-wrap">
+          <div class="login-container">
+            <div class="login-brand">
+              <div class="login-logo-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                  <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                  <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+                </svg>
+              </div>
+              <h1 class="login-app-name">Home EWallet</h1>
+              <p class="login-app-tagline">Shared Household Expense Tracker</p>
+            </div>
+
+            <form class="login-form" id="loginForm" novalidate onsubmit="return false;">
+              <div class="login-input-group">
+                <label for="loginEmail" class="login-field-label">Email Address</label>
+                <div class="login-input-wrap">
+                  <span class="login-input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg></span>
+                  <input type="email" id="loginEmail" class="login-input" placeholder="name@ewallet.com"
+                    autocomplete="email" required>
+                </div>
+              </div>
+              <div class="login-input-group">
+                <label for="loginPassword" class="login-field-label">Password</label>
+                <div class="login-input-wrap">
+                  <span class="login-input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2">
+                      <rect width="18" height="11" x="3" y="11" rx="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg></span>
+                  <input type="password" id="loginPassword" class="login-input" placeholder="Enter password"
+                    autocomplete="current-password" required>
+                  <button type="button" class="password-toggle-btn" id="passwordToggleBtn" aria-label="Toggle password"
+                    tabindex="-1">
+                    <svg class="eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg class="eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2" style="display:none">
+                      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                      <line x1="2" x2="22" y1="2" y2="22" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="login-remember-row">
+                <div class="remember-toggle">
+                  <input type="checkbox" id="rememberMeToggle" class="sr-only switch-input">
+                  <label for="rememberMeToggle" class="switch-track switch-track-sm" aria-hidden="true"><span
+                      class="switch-thumb switch-thumb-sm"></span></label>
+                  <label for="rememberMeToggle" class="remember-label">Remember me</label>
+                </div>
+              </div>
+              <div class="login-error-message" id="loginErrorMessage" hidden>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+                <span id="loginErrorText">Invalid credentials</span>
+              </div>
+              <button type="submit" class="login-submit-btn" id="loginSubmitBtn">
+                <span class="btn-spinner login-spinner" id="loginSpinner"></span>
+                <span class="login-btn-text">Sign In <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                    <polyline points="10 17 15 12 10 7" />
+                    <line x1="15" y1="12" x2="3" y2="12" />
+                  </svg></span>
+              </button>
+            </form>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- VIEW: SHARED DASHBOARD (All users see this)                  -->
+      <!-- ============================================================ -->
+      <div class="app-view" id="sharedView" hidden>
+        <header class="app-header shared-header">
+          <div class="header-nav">
+            <div class="admin-profile-pill">
+              <span class="admin-avatar" id="sharedHeaderAvatar">👑</span>
+              <div>
+                <span class="admin-role" id="sharedHeaderRole">Shared Pool</span>
+                <strong class="household-name">Al-Nour Household</strong>
+              </div>
+            </div>
+            <div class="header-actions" style="display:flex; gap:8px;">
+              <button type="button" class="weekly-header-btn" id="openWeeklyViewBtn" hidden>📊 Weekly</button>
+              <button type="button" class="icon-button refresh-feed-btn" id="refreshFeedBtn" aria-label="Sync Feed"
+                title="Sync Feed">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Financial Hero Card -->
+          <div class="financial-hero-card" id="financialHeroCard">
+            <div class="hero-card-glow"></div>
+            <div class="hero-top-row">
+              <div class="hero-title-group">
+                <span class="hero-subcaption">Total Daily Expenses</span>
+                <span class="hero-date-badge" id="todayDateBadge">Today</span>
+              </div>
+              <span class="live-pulse-badge"><span class="pulse-dot"></span> Live Pool</span>
+            </div>
+            <div class="hero-amount-row">
+              <span class="hero-amount-val" id="totalDailyExpensesVal">0.00</span>
+              <span class="hero-currency">EGP</span>
+            </div>
+            <div class="hero-metrics-row">
+              <div class="hero-metric">
+                <span class="metric-dot pending-dot"></span>
+                <span class="metric-label">Pending:</span>
+                <strong class="metric-val" id="heroPendingTotal">0.00 EGP</strong>
+              </div>
+              <div class="hero-metric-sep"></div>
+              <div class="hero-metric">
+                <span class="metric-dot completed-dot"></span>
+                <span class="metric-label">Completed:</span>
+                <strong class="metric-val" id="heroCompletedTotal">0.00 EGP</strong>
+              </div>
+            </div>
+            <div class="individual-breakdown-container">
+              <div class="breakdown-header">
+                <span class="breakdown-title">Spending by Person</span>
+                <span class="breakdown-count" id="activeMembersCount">3 Members</span>
+              </div>
+              <div class="breakdown-grid" id="individualBreakdownGrid"></div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="filter-section">
+            <div class="category-filter-scroll" id="categoryFilterScroll" role="tablist">
+              <button type="button" class="filter-chip active" data-filter-cat="all" role="tab"
+                aria-selected="true"><span>All</span><span class="chip-count-pill" id="chipCountAll">0</span></button>
+              <button type="button" class="filter-chip" data-filter-cat="grocery" role="tab"
+                aria-selected="false"><span>🛒 Grocery</span><span class="chip-count-pill"
+                  id="chipCountGrocery">0</span></button>
+              <button type="button" class="filter-chip" data-filter-cat="frozen" role="tab"
+                aria-selected="false"><span>❄️ Frozen</span><span class="chip-count-pill"
+                  id="chipCountFrozen">0</span></button>
+              <button type="button" class="filter-chip" data-filter-cat="spices" role="tab"
+                aria-selected="false"><span>🌿 Spices</span><span class="chip-count-pill"
+                  id="chipCountSpices">0</span></button>
+              <button type="button" class="filter-chip" data-filter-cat="cleaning" role="tab"
+                aria-selected="false"><span>🧼 Cleaning</span><span class="chip-count-pill"
+                  id="chipCountCleaning">0</span></button>
+              <button type="button" class="filter-chip" data-filter-cat="school" role="tab"
+                aria-selected="false"><span>📚 School</span><span class="chip-count-pill"
+                  id="chipCountSchool">0</span></button>
+            </div>
+            <div class="quick-filter-bar">
+              <button type="button" class="daily-filter-toggle-btn" id="dailyFilterToggleBtn" aria-pressed="false">
+                <span class="daily-toggle-icon">🔄</span><span class="daily-toggle-text">Daily Only</span><span
+                  class="filter-status-indicator" id="dailyFilterIndicator">Off</span>
+              </button>
+              <span class="filter-summary-info" id="filterSummaryInfo">Showing all items</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="scroll-content feed-scroll-content" id="feedScrollContent">
+          <div class="skeleton-container" id="feedSkeleton" hidden>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+          </div>
+          <div class="request-feed-wrapper" id="requestFeedWrapper">
+            <!-- Section: Awaiting Price -->
+            <section class="feed-section" id="awaitingPriceSection" hidden>
+              <div class="feed-section-header">
+                <div class="feed-section-title-wrap">
+                  <span class="status-indicator-dot awaiting"></span>
+                  <h2 class="feed-section-title">Awaiting Price</h2>
+                  <span class="feed-count-badge awaiting-badge" id="awaitingPriceCount">0</span>
+                </div>
+              </div>
+              <div class="feed-items-list" id="awaitingPriceList"></div>
+            </section>
+
+            <!-- Section: Pending Purchase -->
+            <!-- Empty state if nothing awaiting -->
+            <div class="feed-empty-state" id="allFulfilledEmptyState" hidden>
+              <div class="empty-icon-bubble">🎉</div>
+              <h3 class="empty-title">All items fulfilled!</h3>
+              <p class="empty-desc">No awaiting purchases right now.</p>
+            </div>
+
+            <!-- Section: Completed -->
+            <section class="feed-section" id="completedSection">
+              <div class="feed-section-header collapsible-header" id="completedSectionHeader">
+                <div class="feed-section-title-wrap">
+                  <span class="status-indicator-dot completed"></span>
+                  <h2 class="feed-section-title">Completed</h2>
+                  <span class="feed-count-badge completed-badge" id="completedCountBadge">0</span>
+                </div>
+                <div class="completed-header-right">
+                  <span class="feed-subtotal" id="completedSubtotal">0.00 EGP</span>
+                  <span class="collapse-chevron" id="completedChevron"><svg width="14" height="14" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2.5">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg></span>
+                </div>
+              </div>
+              <div class="feed-items-list completed-list" id="completedItemsList"></div>
+            </section>
+          </div>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- VIEW: PERSONAL EXPENSES (Private Ledger)                     -->
+      <!-- ============================================================ -->
+      <div class="app-view" id="personalView" hidden>
+        <header class="app-header personal-header">
+          <div class="header-nav">
+            <div class="personal-profile-pill" id="personalProfilePill">
+              <span class="personal-avatar" id="personalAvatar">👤</span>
+              <div>
+                <span class="personal-greeting" id="personalGreeting">My Expenses</span>
+                <strong class="personal-name" id="personalName">Personal</strong>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div class="scroll-content personal-scroll-content" id="personalScrollContent">
+          <!-- Metrics -->
+          <div class="personal-metrics-grid">
+            <div class="personal-metric-card metric-primary">
+              <span class="pmc-icon">📅</span>
+              <div class="pmc-data"><span class="pmc-value" id="personalDailyTotal">0.00</span><span
+                  class="pmc-label">Today's Spending</span></div>
+              <span class="pmc-currency">EGP</span>
+            </div>
+            <div class="personal-metric-card metric-secondary">
+              <span class="pmc-icon">📆</span>
+              <div class="pmc-data"><span class="pmc-value" id="personalMonthlyTotal">0.00</span><span
+                  class="pmc-label">This Month</span></div>
+              <span class="pmc-currency">EGP</span>
+            </div>
+            <div class="personal-metric-card metric-tertiary">
+              <span class="pmc-icon">📦</span>
+              <div class="pmc-data"><span class="pmc-value" id="personalItemCount">0</span><span class="pmc-label">Items
+                  Today</span></div>
+            </div>
+          </div>
+
+          <!-- Quick Add Personal Expense -->
+          <div class="personal-quick-add-card" id="personalQuickAddCard">
+            <h3 class="pqa-title">➕ Add Personal Expense</h3>
+            <div class="pqa-row">
+              <select id="personalCategorySelect" class="pqa-select">
+                <option value="" disabled selected>Category...</option>
+                <option value="food_dining" data-emoji="🍽️">🍽️ Food & Dining</option>
+                <option value="transport" data-emoji="🚗">🚗 Transport</option>
+                <option value="entertainment" data-emoji="🎮">🎮 Entertainment</option>
+                <option value="health" data-emoji="💊">💊 Health</option>
+                <option value="shopping" data-emoji="🛍️">🛍️ Shopping</option>
+                <option value="education" data-emoji="📖">📖 Education</option>
+                <option value="other" data-emoji="📌">📌 Other</option>
+              </select>
+            </div>
+            <div class="pqa-row">
+              <input type="text" id="personalItemInput" class="pqa-input" placeholder="What did you spend on?">
+            </div>
+            <div class="pqa-row">
+              <div class="pqa-price-wrap">
+                <span class="pqa-currency-tag">EGP</span>
+                <input type="number" id="personalAmountInput" class="pqa-price-input" placeholder="Amount" min="0"
+                  step="0.5" inputmode="decimal">
+              </div>
+              <button type="button" class="pqa-add-btn" id="personalAddBtn">Add</button>
+            </div>
+          </div>
+
+          <!-- Category Breakdown -->
+          <div class="personal-category-breakdown" id="personalCategoryBreakdown">
+            <h3 class="personal-section-title">Category Breakdown</h3>
+            <div class="category-bars-container" id="personalCategoryBars"></div>
+          </div>
+
+          <!-- Expense Ledger -->
+          <div class="personal-ledger-section">
+            <div class="personal-section-header">
+              <h3 class="personal-section-title">Expense History</h3>
+              <span class="ledger-count" id="personalLedgerCount">0 entries</span>
+            </div>
+            <div class="personal-ledger-list" id="personalLedgerList"></div>
+            <div class="personal-ledger-empty" id="personalLedgerEmpty" hidden>
+              <div class="empty-icon-bubble">📋</div>
+              <h3 class="empty-title">No personal expenses yet</h3>
+              <p class="empty-desc">Use the form above to track your spending.</p>
+            </div>
+          </div>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- VIEW: ADD REQUEST (Admin Quick Add Shared)                   -->
+      <!-- ============================================================ -->
+      <div class="app-view" id="addRequestView" hidden>
+        <header class="app-header personal-header">
+          <div class="header-nav">
+            <button type="button" class="icon-button" id="backFromAddBtn" aria-label="Back">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <div class="header-household">
+              <span class="household-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                </svg> Al-Nour Household</span>
+            </div>
+            <div style="width:40px;"></div>
+          </div>
+          <div class="header-title-block" style="padding-top:12px; padding-bottom:8px;">
+            <h1 class="page-title">Quick Add Shared</h1>
+            <p class="page-subtitle" id="addFormSubtitle">Quickly add an item to the shared household list.</p>
+          </div>
+        </header>
+
+        <div class="scroll-content personal-scroll-content">
+          <div class="personal-quick-add-card" style="margin-top: 8px;">
+            <h3 class="pqa-title">📝 Shared Request Details</h3>
+            <div class="pqa-row">
+              <select id="sharedCategorySelect" class="pqa-select">
+                <option value="" disabled selected>Category...</option>
+                <option value="grocery" data-emoji="🛒">🛒 Grocery</option>
+                <option value="frozen" data-emoji="❄️">❄️ Frozen Food</option>
+                <option value="spices" data-emoji="🌿">🌿 Spices & Herbs</option>
+                <option value="cleaning" data-emoji="🧼">🧼 Cleaning</option>
+                <option value="school" data-emoji="📚">📚 School Expenses</option>
+              </select>
+            </div>
+            <div class="pqa-row">
+              <select id="sharedItemDropdown" class="pqa-select" disabled>
+                <option value="" disabled selected>First select a category...</option>
+              </select>
+            </div>
+            <div class="pqa-row">
+              <select id="sharedAssignedToDropdown" class="pqa-select">
+                <option value="">Anyone (Unassigned)</option>
+                <option value="user_norien">👧 Norien</option>
+                <option value="user_zeyad">👦 Zeyad</option>
+              </select>
+            </div>
+            <div class="pqa-row">
+              <div class="pqa-price-wrap">
+                <span class="pqa-currency-tag">EGP</span>
+                <input type="number" id="sharedAmountInput" class="pqa-price-input" placeholder="Price (optional)"
+                  min="0" step="0.5" inputmode="decimal">
+              </div>
+              <button type="button" class="pqa-add-btn" id="sharedAddBtn">Add</button>
+            </div>
+            <p style="font-size:12px; color:var(--color-text-secondary); margin-top:12px; line-height:1.5;">If you enter
+              a price, the item will be instantly marked as <b>Bought</b>. Otherwise, it will be added to <b>Awaiting
+                Price</b>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- VIEW: WEEKLY DASHBOARD (Admin Only)                          -->
+      <!-- ============================================================ -->
+      <div class="app-view" id="weeklyView" hidden>
+        <header class="app-header shared-header">
+          <div class="header-nav">
+            <button type="button" class="icon-button" id="backFromWeeklyBtn" aria-label="Back">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <div class="header-household">
+              <span class="household-badge">Al-Nour Weekly Report</span>
+            </div>
+            <div style="width:40px;"></div>
+          </div>
+        </header>
+        <div class="scroll-content" style="padding: 16px;">
+          <div class="weekly-card">
+            <span class="hero-subcaption">Total Weekly Expenses</span>
+            <div class="weekly-total-value" id="weeklyTotalSum">0.00 EGP</div>
+            <div style="color:var(--color-text-secondary);font-size:13px;margin-top:4px;" id="weeklyItemCount">0 items
+              this week</div>
+          </div>
+          <div class="weekly-card">
+            <h3 class="settings-section-title">Weekly Breakdown by Member</h3>
+            <div id="weeklyBreakdownList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- VIEW: SETTINGS                                               -->
+      <!-- ============================================================ -->
+      <div class="app-view" id="settingsView" hidden>
+        <header class="app-header settings-page-header">
+          <div class="header-nav">
+            <div class="personal-profile-pill">
+              <span class="personal-avatar" id="settingsAvatar">⚙️</span>
+              <div><strong class="personal-name">Settings</strong></div>
+            </div>
+            <div class="header-actions">
+              <button type="button" class="icon-button logout-btn" id="logoutBtn" aria-label="Logout" title="Logout">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </header>
+        <div class="scroll-content settings-scroll-content">
+          <!-- User Info -->
+          <div class="settings-user-info" id="settingsUserInfo">
+            <span class="settings-avatar" id="settingsUserAvatar">👤</span>
+            <div>
+              <strong class="settings-name" id="settingsUserName">User</strong>
+              <span class="settings-email" id="settingsUserEmail">user@ewallet.com</span>
+              <span class="settings-role-badge" id="settingsRoleBadge">Member</span>
+            </div>
+          </div>
+          <!-- Change Password -->
+          <div class="settings-card">
+            <h3 class="settings-section-title">🔒 Change Password</h3>
+            <form id="changePasswordForm" novalidate onsubmit="return false;">
+              <div class="login-input-group"><label for="currentPasswordInput" class="login-field-label">Current
+                  Password</label>
+                <div class="login-input-wrap settings-input-wrap"><input type="password" id="currentPasswordInput"
+                    class="login-input settings-input" placeholder="Enter current password" required></div>
+              </div>
+              <div class="login-input-group"><label for="newPasswordInput" class="login-field-label">New
+                  Password</label>
+                <div class="login-input-wrap settings-input-wrap"><input type="password" id="newPasswordInput"
+                    class="login-input settings-input" placeholder="Min 6 characters" required minlength="6"></div>
+              </div>
+              <div class="login-input-group"><label for="confirmPasswordInput" class="login-field-label">Confirm New
+                  Password</label>
+                <div class="login-input-wrap settings-input-wrap"><input type="password" id="confirmPasswordInput"
+                    class="login-input settings-input" placeholder="Re-enter new password" required></div>
+              </div>
+              <div class="settings-feedback" id="settingsFeedback" hidden><span id="settingsFeedbackText"></span></div>
+              <button type="submit" class="login-submit-btn settings-save-btn" id="savePasswordBtn">Save New
+                Password</button>
+            </form>
+          </div>
+          <!-- About -->
+          <div class="settings-card settings-about">
+            <h3 class="settings-section-title">ℹ️ About</h3>
+            <p class="settings-about-text">Home EWallet v4.0 — Shared household expense tracker with personal ledger,
+              role-based access, and localStorage persistence.</p>
+            <button type="button" class="settings-danger-btn" id="resetDataBtn">⚠️ Reset All Data</button>
+          </div>
+          <div class="bottom-spacer"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- 4-TAB BOTTOM NAVIGATION                                      -->
+      <!-- ============================================================ -->
+      <nav class="bottom-nav-bar" id="bottomNavBar" aria-label="Main Navigation" hidden>
+        <button type="button" class="nav-tab-btn active" id="navSharedTab">
+          <div class="nav-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg><span class="nav-badge" id="navPendingBadge" style="display:none;">0</span></div><span
+            class="nav-tab-label">Shared</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="navPersonalTab">
+          <div class="nav-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg></div><span class="nav-tab-label">Personal</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="navAddTab" data-nav-role="admin">
+          <div class="nav-icon-wrap nav-add-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.6">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg></div><span class="nav-tab-label">Add</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="navSettingsTab">
+          <div class="nav-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+            </svg></div><span class="nav-tab-label">Settings</span>
+        </button>
+      </nav>
+
+      <!-- Success Modal -->
+      <div class="modal-overlay" id="successModal" role="dialog" hidden>
+        <div class="modal-backdrop"></div>
+        <div class="modal-card">
+          <div class="success-confetti-circle"><svg class="check-svg" width="36" height="36" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="3.5">
+              <polyline points="20 6 9 17 4 12" />
+            </svg></div>
+          <h2 class="modal-title">Request Dispatched!</h2>
+          <p class="modal-desc" id="modalDesc">Your request has been added to the shared pool.</p>
+          <div class="receipt-card" id="modalReceiptCard"></div>
+          <div class="modal-actions">
+            <button type="button" class="modal-primary-btn" id="modalViewFeedBtn">View Shared Feed</button>
+            <button type="button" class="modal-secondary-btn" id="modalAddAnotherBtn">+ Add Another</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toast Container -->
+      <div class="toast-container" id="toastContainer"></div>
+    </main>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

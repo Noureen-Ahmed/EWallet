@@ -1,0 +1,333 @@
+/**
+ * db.js — localStorage-backed Persistence Layer for Home EWallet
+ * Collections: Users, SharedRequests, PersonalExpenses, Session
+ */
+
+const DB = (() => {
+  const KEYS = {
+    users: 'ewallet_users',
+    requests: 'ewallet_requests',
+    personalExpenses: 'ewallet_personal_expenses',
+    session: 'ewallet_session',
+    initialized: 'ewallet_initialized_v3' // Updated to force re-seed
+  };
+
+  // ==========================================
+  // Password Hashing (Web Crypto API)
+  // ==========================================
+  async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password + '_ewallet_salt_2026');
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // ==========================================
+  // Low-Level Storage
+  // ==========================================
+  function getCollection(key) {
+    try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : []; }
+    catch (e) { console.error(`DB: read ${key}`, e); return []; }
+  }
+  function setCollection(key, data) {
+    try { localStorage.setItem(key, JSON.stringify(data)); }
+    catch (e) { console.error(`DB: write ${key}`, e); }
+  }
+  function getObject(key) {
+    try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+  function setObject(key, obj) {
+    try { localStorage.setItem(key, JSON.stringify(obj)); }
+    catch (e) { console.error(`DB: write ${key}`, e); }
+  }
+
+  // ==========================================
+  // Initialization & Seeding
+  // ==========================================
+  async function init() {
+    if (localStorage.getItem(KEYS.initialized)) return;
+
+    // Seed users
+    const defaultUsers = [
+      { uid: 'user_wafaa', name: 'Wafaa (Mom)', shortName: 'Wafaa', email: 'wafaa@ewallet.com', passwordHash: await hashPassword('admin123'), role: 'admin', avatar: '👩' },
+      { uid: 'user_norien', name: 'Norien', shortName: 'Norien', email: 'norien@ewallet.com', passwordHash: await hashPassword('norien123'), role: 'member', avatar: '👧' },
+      { uid: 'user_zeyad', name: 'Zeyad', shortName: 'Zeyad', email: 'zeyad@ewallet.com', passwordHash: await hashPassword('zeyad123'), role: 'member', avatar: '👦' }
+    ];
+    setCollection(KEYS.users, defaultUsers);
+
+    // Seed shared requests
+    const now = new Date();
+    const y = now.getFullYear(), m = now.getMonth(), d = now.getDate();
+    const defaultRequests = [
+      { id: 'req-s1', userId: 'user_wafaa', userName: 'Wafaa (Mom)', userAvatar: '👩', categoryId: 'grocery', categoryName: 'Grocery', categoryEmoji: '🛒', itemName: 'Fresh Milk', itemEmoji: '🥛', quantity: 2, unit: 'Bottle (1L)', price: 0, totalPrice: 0, isDaily: true, status: 'pending_price', createdAt: new Date(y, m, d, 8, 30).toISOString(), boughtAt: null, pricedBy: null, assignedTo: 'user_norien' },
+      { id: 'req-s2', userId: 'user_wafaa', userName: 'Wafaa (Mom)', userAvatar: '👩', categoryId: 'grocery', categoryName: 'Grocery', categoryEmoji: '🛒', itemName: 'Eggs (Pack of 30)', itemEmoji: '🥚', quantity: 1, unit: 'Carton', price: 0, totalPrice: 0, isDaily: false, status: 'pending_price', createdAt: new Date(y, m, d, 8, 45).toISOString(), boughtAt: null, pricedBy: null, assignedTo: null },
+      { id: 'req-s3', userId: 'user_wafaa', userName: 'Wafaa (Mom)', userAvatar: '👩', categoryId: 'frozen', categoryName: 'Frozen Food', categoryEmoji: '❄️', itemName: 'Beef Burgers Patties', itemEmoji: '🍔', quantity: 1, unit: '8-Pack', price: 145, totalPrice: 145, isDaily: false, status: 'pending', createdAt: new Date(y, m, d, 9, 10).toISOString(), boughtAt: null, pricedBy: 'user_zeyad', assignedTo: 'user_zeyad' },
+      { id: 'req-s4', userId: 'user_wafaa', userName: 'Wafaa (Mom)', userAvatar: '👩', categoryId: 'school', categoryName: 'School Expenses', categoryEmoji: '📚', itemName: 'A4 Lined Notebooks', itemEmoji: '📓', quantity: 2, unit: 'Pack of 5', price: 85, totalPrice: 170, isDaily: false, status: 'pending', createdAt: new Date(y, m, d, 9, 15).toISOString(), boughtAt: null, pricedBy: 'user_norien', assignedTo: 'user_norien' },
+      { id: 'req-s5', userId: 'user_wafaa', userName: 'Wafaa (Mom)', userAvatar: '👩', categoryId: 'cleaning', categoryName: 'Cleaning Supplies', categoryEmoji: '🧼', itemName: 'Concentrated Dish Soap', itemEmoji: '🧴', quantity: 1, unit: '1L Bottle', price: 45, totalPrice: 45, isDaily: true, status: 'completed', createdAt: new Date(y, m, d, 7, 15).toISOString(), boughtAt: new Date(y, m, d, 8, 15).toISOString(), pricedBy: 'user_zeyad', assignedTo: 'user_zeyad' },
+      { id: 'req-s6', userId: 'user_wafaa', userName: 'Wafaa (Mom)', userAvatar: '👩', categoryId: 'grocery', categoryName: 'Grocery', categoryEmoji: '🛒', itemName: 'Baladi Fresh Bread', itemEmoji: '🍞', quantity: 2, unit: 'Pack of 10', price: 20, totalPrice: 40, isDaily: true, status: 'completed', createdAt: new Date(y, m, d, 7, 0).toISOString(), boughtAt: new Date(y, m, d, 7, 45).toISOString(), pricedBy: 'user_zeyad', assignedTo: null }
+    ];
+    setCollection(KEYS.requests, defaultRequests);
+
+    // Seed personal expenses
+    const defaultPersonal = [
+      { id: 'pe-1', userId: 'user_zeyad', categoryId: 'food_dining', categoryName: 'Food & Dining', categoryEmoji: '🍽️', itemName: 'Lunch at work', amount: 85, createdAt: new Date(y, m, d, 13, 0).toISOString() },
+      { id: 'pe-2', userId: 'user_norien', categoryId: 'transport', categoryName: 'Transport', categoryEmoji: '🚗', itemName: 'Uber to university', amount: 45, createdAt: new Date(y, m, d, 7, 30).toISOString() }
+    ];
+    setCollection(KEYS.personalExpenses, defaultPersonal);
+
+    localStorage.setItem(KEYS.initialized, 'true');
+    console.log('DB: Initialized with v2 seed data');
+  }
+
+  // ==========================================
+  // User Operations
+  // ==========================================
+  function getAllUsers() { return getCollection(KEYS.users); }
+  function getUserByUid(uid) { return getAllUsers().find(u => u.uid === uid) || null; }
+  function getUserByEmail(email) { return getAllUsers().find(u => u.email.toLowerCase() === email.toLowerCase()) || null; }
+
+  async function authenticateUser(email, password) {
+    const user = getUserByEmail(email);
+    if (!user) return { success: false, error: 'No account found with this email.' };
+    const hash = await hashPassword(password);
+    if (user.passwordHash !== hash) return { success: false, error: 'Incorrect password. Please try again.' };
+    return { success: true, user: { uid: user.uid, name: user.name, shortName: user.shortName, email: user.email, role: user.role, avatar: user.avatar } };
+  }
+
+  async function changePassword(uid, currentPassword, newPassword) {
+    const users = getAllUsers();
+    const idx = users.findIndex(u => u.uid === uid);
+    if (idx === -1) return { success: false, error: 'User not found.' };
+    const currentHash = await hashPassword(currentPassword);
+    if (users[idx].passwordHash !== currentHash) return { success: false, error: 'Current password is incorrect.' };
+    if (newPassword.length < 6) return { success: false, error: 'New password must be at least 6 characters.' };
+    users[idx].passwordHash = await hashPassword(newPassword);
+    setCollection(KEYS.users, users);
+    return { success: true };
+  }
+
+  // ==========================================
+  // Session
+  // ==========================================
+  function getSession() { return getObject(KEYS.session); }
+  function setSession(userObj, rememberMe) {
+    const session = { uid: userObj.uid, name: userObj.name, shortName: userObj.shortName, email: userObj.email, role: userObj.role, avatar: userObj.avatar, rememberMe, loginTime: new Date().toISOString() };
+    setObject(KEYS.session, session);
+    return session;
+  }
+  function clearSession() { localStorage.removeItem(KEYS.session); }
+
+  // ==========================================
+  // Shared Request Operations
+  // ==========================================
+  function getAllRequests() { return getCollection(KEYS.requests); }
+
+  function getRequests(filters = {}) {
+    let requests = getAllRequests();
+    if (filters.userId) requests = requests.filter(r => r.userId === filters.userId);
+    if (filters.status) requests = requests.filter(r => r.status === filters.status);
+    if (filters.statusIn) requests = requests.filter(r => filters.statusIn.includes(r.status));
+    if (filters.categoryId && filters.categoryId !== 'all') requests = requests.filter(r => r.categoryId === filters.categoryId);
+    if (filters.dailyOnly) requests = requests.filter(r => r.isDaily === true);
+    if (filters.todayOnly) {
+      const ts = new Date(); ts.setHours(0, 0, 0, 0);
+      requests = requests.filter(r => new Date(r.createdAt) >= ts);
+    }
+    requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return requests;
+  }
+
+  // Admin dispatches request (no price)
+  function addRequest(data) {
+    const requests = getAllRequests();
+    const newReq = {
+      id: 'req-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4),
+      userId: data.userId, userName: data.userName, userAvatar: data.userAvatar,
+      categoryId: data.categoryId, categoryName: data.categoryName, categoryEmoji: data.categoryEmoji,
+      itemName: data.itemName, itemEmoji: data.itemEmoji,
+      quantity: data.quantity, unit: data.unit,
+      price: data.price || 0,
+      totalPrice: data.price ? data.quantity * data.price : 0,
+      isDaily: data.isDaily || false,
+      status: data.price ? 'completed' : 'pending_price',
+      createdAt: new Date().toISOString(),
+      boughtAt: data.price ? new Date().toISOString() : null,
+      pricedBy: data.pricedBy || null,
+      assignedTo: data.assignedTo || null
+    };
+    requests.unshift(newReq);
+    setCollection(KEYS.requests, requests);
+    return newReq;
+  }
+
+  // Member enters actual purchase price
+  function updateRequestPrice(id, price, pricedByUid) {
+    const requests = getAllRequests();
+    const idx = requests.findIndex(r => r.id === id);
+    if (idx === -1) return null;
+    requests[idx].price = price;
+    requests[idx].totalPrice = requests[idx].quantity * price;
+    requests[idx].pricedBy = pricedByUid;
+    if (requests[idx].status === 'pending_price') {
+      requests[idx].status = 'completed';
+      requests[idx].boughtAt = new Date().toISOString();
+    }
+    setCollection(KEYS.requests, requests);
+    return requests[idx];
+  }
+
+  function updateRequestStatus(id, newStatus) {
+    const requests = getAllRequests();
+    const idx = requests.findIndex(r => r.id === id);
+    if (idx === -1) return null;
+    requests[idx].status = newStatus;
+    if (newStatus === 'completed') requests[idx].boughtAt = new Date().toISOString();
+    else requests[idx].boughtAt = null;
+    setCollection(KEYS.requests, requests);
+    return requests[idx];
+  }
+
+  function batchUpdateStatus(ids, newStatus) {
+    const requests = getAllRequests();
+    ids.forEach(id => {
+      const idx = requests.findIndex(r => r.id === id);
+      if (idx !== -1) {
+        requests[idx].status = newStatus;
+        if (newStatus === 'completed') requests[idx].boughtAt = new Date().toISOString();
+        else requests[idx].boughtAt = null;
+      }
+    });
+    setCollection(KEYS.requests, requests);
+  }
+
+  function deleteRequest(id) {
+    let requests = getAllRequests();
+    requests = requests.filter(r => r.id !== id);
+    setCollection(KEYS.requests, requests);
+    return true;
+  }
+
+  // Shared financials (only count priced items)
+  function getSharedFinancials() {
+    const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
+    const all = getAllRequests().filter(r => new Date(r.createdAt) >= todayStart);
+    const priced = all.filter(r => r.status !== 'pending_price');
+    let dailyTotal = 0, dailyPending = 0, dailyCompleted = 0;
+    priced.forEach(r => {
+      const cost = Number(r.totalPrice) || 0;
+      dailyTotal += cost;
+      if (r.status === 'pending') dailyPending += cost;
+      else if (r.status === 'completed') dailyCompleted += cost;
+    });
+    // Per-user breakdown
+    const userBreakdown = {};
+    getAllUsers().forEach(u => { userBreakdown[u.uid] = { user: u, count: 0, spent: 0 }; });
+    all.forEach(r => {
+      if (userBreakdown[r.userId]) {
+        userBreakdown[r.userId].count++;
+        userBreakdown[r.userId].spent += (Number(r.totalPrice) || 0);
+      }
+    });
+    return { dailyTotal, dailyPending, dailyCompleted, awaitingPriceCount: all.filter(r => r.status === 'pending_price').length, userBreakdown, todayItemCount: all.length };
+  }
+
+  // Weekly shared financials (Admin view)
+  function getWeeklySharedFinancials() {
+    const today = new Date();
+    // Go back to the start of the week (assuming Sunday start)
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+
+    const all = getAllRequests().filter(r => new Date(r.createdAt) >= weekStart);
+    const priced = all.filter(r => r.status !== 'pending_price');
+
+    let weeklyTotal = 0;
+    priced.forEach(r => weeklyTotal += (Number(r.totalPrice) || 0));
+
+    const userBreakdown = {};
+    getAllUsers().forEach(u => { userBreakdown[u.uid] = { user: u, count: 0, spent: 0 }; });
+    all.forEach(r => {
+      if (userBreakdown[r.userId]) {
+        userBreakdown[r.userId].count++;
+        userBreakdown[r.userId].spent += (Number(r.totalPrice) || 0);
+      }
+    });
+
+    return { weeklyTotal, userBreakdown, weekItemCount: all.length };
+  }
+
+  // ==========================================
+  // Personal Expense Operations
+  // ==========================================
+  function getPersonalExpenses(filters = {}) {
+    let items = getCollection(KEYS.personalExpenses);
+    if (filters.userId) items = items.filter(i => i.userId === filters.userId);
+    if (filters.todayOnly) {
+      const ts = new Date(); ts.setHours(0, 0, 0, 0);
+      items = items.filter(i => new Date(i.createdAt) >= ts);
+    }
+    if (filters.monthOnly) {
+      const ms = new Date(); ms.setDate(1); ms.setHours(0, 0, 0, 0);
+      items = items.filter(i => new Date(i.createdAt) >= ms);
+    }
+    items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return items;
+  }
+
+  function addPersonalExpense(data) {
+    const items = getCollection(KEYS.personalExpenses);
+    const newItem = {
+      id: 'pe-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 4),
+      userId: data.userId,
+      categoryId: data.categoryId, categoryName: data.categoryName, categoryEmoji: data.categoryEmoji,
+      itemName: data.itemName,
+      amount: Number(data.amount) || 0,
+      createdAt: new Date().toISOString()
+    };
+    items.unshift(newItem);
+    setCollection(KEYS.personalExpenses, items);
+    return newItem;
+  }
+
+  function deletePersonalExpense(id) {
+    let items = getCollection(KEYS.personalExpenses);
+    items = items.filter(i => i.id !== id);
+    setCollection(KEYS.personalExpenses, items);
+    return true;
+  }
+
+  function getPersonalFinancials(userId) {
+    const todayItems = getPersonalExpenses({ userId, todayOnly: true });
+    const monthItems = getPersonalExpenses({ userId, monthOnly: true });
+    let dailyTotal = 0, monthlyTotal = 0;
+    todayItems.forEach(i => dailyTotal += (Number(i.amount) || 0));
+    monthItems.forEach(i => monthlyTotal += (Number(i.amount) || 0));
+    // Category breakdown
+    const catMap = {};
+    todayItems.forEach(i => {
+      if (!catMap[i.categoryId]) catMap[i.categoryId] = { categoryId: i.categoryId, name: i.categoryName, emoji: i.categoryEmoji, total: 0, count: 0 };
+      catMap[i.categoryId].total += (Number(i.amount) || 0);
+      catMap[i.categoryId].count++;
+    });
+    return { dailyTotal, monthlyTotal, todayItemCount: todayItems.length, categoryBreakdown: Object.values(catMap) };
+  }
+
+  // ==========================================
+  // Reset
+  // ==========================================
+  function resetDB() {
+    Object.values(KEYS).forEach(k => localStorage.removeItem(k));
+    console.log('DB: All data cleared.');
+  }
+
+  return {
+    init, getAllUsers, getUserByUid, getUserByEmail, authenticateUser, changePassword,
+    getSession, setSession, clearSession,
+    getAllRequests, getRequests, addRequest, updateRequestPrice, updateRequestStatus, batchUpdateStatus, deleteRequest, getSharedFinancials, getWeeklySharedFinancials,
+    getPersonalExpenses, addPersonalExpense, deletePersonalExpense, getPersonalFinancials,
+    resetDB
+  };
+})();
