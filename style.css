@@ -76,12 +76,13 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh; /* Fixes mobile Safari address bar jump */
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg-app);
-  overflow-x: hidden;
+  overflow: hidden; /* Lock body scrolling */
   margin: 0;
   padding: 0;
 }
@@ -92,7 +93,8 @@ body {
   flex-direction: column;
   flex: 1;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  overflow: hidden; /* Prevent view scrolling, let scroll-content handle it */
   position: relative;
 }
 
@@ -3897,6 +3899,7 @@ input:focus-visible {
   max-width: 1080px;
   margin: 0 auto;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Momentum scrolling for iOS */
   padding: 20px 24px 110px;
   box-sizing: border-box;
 }
