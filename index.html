@@ -356,41 +356,73 @@
     </header>
 
     <div class="scroll-content personal-scroll-content">
-      <div class="personal-quick-add-card" style="margin-top: 8px;">
-        <h3 class="pqa-title">📝 Shared Request Details</h3>
+      <div class="personal-quick-add-card" style="margin-top: 8px;" dir="rtl">
+        <h3 class="pqa-title" style="text-align: right;">📝 إضافة طلب جديد</h3>
         <div class="pqa-row">
-          <select id="sharedCategorySelect" class="pqa-select">
-            <option value="" disabled selected>Category...</option>
-            <option value="grocery" data-emoji="🛒">🛒 Grocery</option>
-            <option value="frozen" data-emoji="❄️">❄️ Frozen Food</option>
-            <option value="spices" data-emoji="🌿">🌿 Spices & Herbs</option>
-            <option value="cleaning" data-emoji="🧼">🧼 Cleaning</option>
-            <option value="school" data-emoji="📚">📚 School Expenses</option>
-          </select>
+          <div class="autocomplete-wrapper" style="width: 100%;">
+            <input type="text" id="sharedItemInput" class="pqa-select" placeholder="ابحث أو أضف عنصر جديد..." autocomplete="off">
+            <div id="sharedItemDropdownList" class="autocomplete-dropdown" hidden></div>
+          </div>
         </div>
-        <div class="pqa-row">
-          <select id="sharedItemDropdown" class="pqa-select" disabled>
-            <option value="" disabled selected>First select a category...</option>
-          </select>
+
+        <!-- Quantity Mode Toggles -->
+        <div class="pqa-row qty-mode-pills" style="justify-content: space-between;">
+          <button type="button" class="qty-mode-btn active" data-mode="count">عدد</button>
+          <button type="button" class="qty-mode-btn" data-mode="weight">وزن</button>
+          <button type="button" class="qty-mode-btn" data-mode="amount">مبلغ</button>
         </div>
+
+        <!-- Quantity Inputs -->
+        <div class="pqa-row qty-input-section" id="qtySectionCount">
+          <div class="stepper-wrap">
+            <button type="button" class="stepper-btn" id="stepperMinus">−</button>
+            <input type="number" id="stepperValue" class="stepper-input" value="1" min="1" readonly>
+            <button type="button" class="stepper-btn" id="stepperPlus">+</button>
+          </div>
+        </div>
+
+        <div class="pqa-row qty-input-section" id="qtySectionWeight" hidden>
+          <div style="display:flex; flex-direction:column; width:100%; gap:8px;">
+            <div class="pqa-price-wrap" style="width:100%">
+              <span class="pqa-currency-tag" style="border-radius: 0 8px 8px 0; border-right: none; border-left: 1px solid var(--color-border);">KG</span>
+              <input type="number" id="weightInput" class="pqa-price-input" placeholder="مثال: 1.5" min="0.1" step="0.1" inputmode="decimal" style="border-radius: 8px 0 0 8px;">
+            </div>
+            <div class="fraction-btn-group">
+              <button type="button" class="fraction-btn" data-val="0.25">¼</button>
+              <button type="button" class="fraction-btn" data-val="0.5">½</button>
+              <button type="button" class="fraction-btn" data-val="0.75">¾</button>
+              <button type="button" class="fraction-btn" data-val="1">1</button>
+              <button type="button" class="fraction-btn" data-val="1.5">1½</button>
+              <button type="button" class="fraction-btn" data-val="2">2</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pqa-row qty-input-section" id="qtySectionAmount" hidden>
+          <div class="pqa-price-wrap" style="width:100%">
+            <span class="pqa-currency-tag" style="border-radius: 0 8px 8px 0; border-right: none; border-left: 1px solid var(--color-border);">EGP</span>
+            <input type="number" id="amountFixedInput" class="pqa-price-input" placeholder="المبلغ الثابت" min="0" step="0.5" inputmode="decimal" style="border-radius: 8px 0 0 8px;">
+          </div>
+        </div>
+        
         <div class="pqa-row">
           <select id="sharedAssignedToDropdown" class="pqa-select">
-            <option value="">Anyone (Unassigned)</option>
-            <option value="user_norien">👧 Norien</option>
-            <option value="user_zeyad">👦 Zeyad</option>
+            <option value="">أي شخص (غير محدد)</option>
+            <option value="user_norien">👧 نورين</option>
+            <option value="user_zeyad">👦 زياد</option>
           </select>
         </div>
-        <div class="pqa-row">
-          <div class="pqa-price-wrap">
-            <span class="pqa-currency-tag">EGP</span>
-            <input type="number" id="sharedAmountInput" class="pqa-price-input" placeholder="Price (optional)" min="0"
-              step="0.5" inputmode="decimal">
+
+        <!-- Adding Item button and price optional if count/weight -->
+        <div class="pqa-row" id="optionalPriceRow">
+          <div class="pqa-price-wrap" style="flex:1;">
+            <span class="pqa-currency-tag" style="border-radius: 0 8px 8px 0; border-right: none; border-left: 1px solid var(--color-border);">EGP</span>
+            <input type="number" id="sharedAmountInput" class="pqa-price-input" placeholder="السعر (اختياري)" min="0" step="0.5" inputmode="decimal" style="border-radius: 8px 0 0 8px;">
           </div>
-          <button type="button" class="pqa-add-btn" id="sharedAddBtn">Add</button>
+          <button type="button" class="pqa-add-btn" id="sharedAddBtn" style="margin-right: 8px; border-radius: 8px;">إضافة</button>
         </div>
-        <p style="font-size:12px; color:var(--color-text-secondary); margin-top:12px; line-height:1.5;">If you enter
-          a price, the item will be instantly marked as <b>Bought</b>. Otherwise, it will be added to <b>Awaiting
-            Price</b>.</p>
+
+        <p style="font-size:12px; color:var(--color-text-secondary); margin-top:12px; line-height:1.5; text-align:right;" id="priceHelpText">إذا قمت بإدخال السعر، سيتم تسجيل العنصر كـ <b>مُشترى</b> فوراً.</p>
       </div>
     </div>
   </div>

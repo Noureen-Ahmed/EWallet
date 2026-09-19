@@ -4111,6 +4111,136 @@ input:focus-visible {
     border: 1px solid var(--color-border);
     box-shadow: 0 16px 36px -6px rgba(15, 23, 42, 0.16);
     padding: 6px 16px;
-    height: 62px;
   }
+}
+
+/* ==========================================================================
+   Add Request Form Enhancements (Combobox & Quantity System)
+   ========================================================================== */
+
+/* Combobox */
+.autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+}
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+  text-align: right; /* RTL */
+}
+.autocomplete-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-bg-subtle);
+  font-size: 15px;
+  color: var(--color-text-main);
+  transition: var(--transition-quick);
+}
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+.autocomplete-item:hover, .autocomplete-item.active {
+  background: var(--color-primary-light);
+}
+
+/* Quantity Mode Toggles */
+.qty-mode-pills {
+  display: flex;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  margin-bottom: 16px;
+}
+.qty-mode-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: var(--transition-quick);
+}
+.qty-mode-btn.active {
+  background: white;
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Stepper (Count Mode) */
+.stepper-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+  width: 100%;
+}
+.stepper-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: white;
+  border-radius: var(--radius-md);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--color-text-main);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stepper-btn:active {
+  transform: scale(0.95);
+}
+.stepper-input {
+  width: 60px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: var(--color-text-main);
+  outline: none;
+}
+
+/* Fraction Buttons (Weight Mode) */
+.fraction-btn-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+.fraction-btn {
+  border: 1px solid var(--color-border);
+  background: white;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: var(--transition-quick);
+}
+.fraction-btn:hover {
+  border-color: var(--color-primary-border);
+  background: var(--color-primary-light);
+}
+.fraction-btn:active {
+  transform: scale(0.96);
 }

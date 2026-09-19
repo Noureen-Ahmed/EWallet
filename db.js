@@ -241,9 +241,10 @@ const DB = (() => {
         else if (r.status === 'completed') dailyCompleted += r.totalPrice || 0;
         dailyTotal += r.totalPrice || 0;
 
-        if (userBreakdown[r.userId]) {
-          userBreakdown[r.userId].count++;
-          userBreakdown[r.userId].spent += (Number(r.totalPrice) || 0);
+        const targetUser = r.assignedTo || r.userId;
+        if (userBreakdown[targetUser]) {
+          userBreakdown[targetUser].count++;
+          userBreakdown[targetUser].spent += (Number(r.totalPrice) || 0);
         }
       }
     });

@@ -6,61 +6,143 @@
 // CATALOG DATA (Categories & Pre-defined Items)
 // ==========================================
 const CATALOG_DATA = {
-  grocery: {
-    id: 'grocery', name: 'Grocery', emoji: '🛒', subtitle: 'Dairy, Pantry & Fresh Essentials',
+  frozen: {
+    id: 'frozen', name: 'الفريزر', emoji: '❄️', subtitle: 'لحوم ومجمدات',
     items: [
-      { id: 'milk', name: 'Milk', emoji: '🥛', unit: 'Bottle (1L)', defaultPrice: 42 },
-      { id: 'eggs', name: 'Eggs', emoji: '🥚', unit: 'Carton', defaultPrice: 165 },
-      { id: 'cheese', name: 'White Cheese', emoji: '🧀', unit: '500g Tub', defaultPrice: 75 },
-      { id: 'bread', name: 'Baladi Bread.', emoji: '🍞', unit: 'Pack of 10', defaultPrice: 20 },
-      { id: 'butter', name: 'Natural Butter Block', emoji: '🧈', unit: '500g Block', defaultPrice: 95 },
-      { id: 'olive_oil', name: 'Extra Virgin Olive Oil', emoji: '🫒', unit: '750ml Bottle', defaultPrice: 210 },
-      { id: 'rice', name: 'Egyptian White Rice', emoji: '🍚', unit: '1kg Bag', defaultPrice: 35 },
-      { id: 'yogurt', name: 'Plain Greek Yogurt', emoji: '🥣', unit: '6-Pack', defaultPrice: 55 }
+      { id: 'f1', name: 'لحمه قطع', emoji: '🥩', unit: 'kg', defaultPrice: 0 },
+      { id: 'f2', name: 'لحمه مفرومه', emoji: '🍔', unit: 'kg', defaultPrice: 0 },
+      { id: 'f3', name: 'لحمه كوكتيل', emoji: '🍲', unit: 'kg', defaultPrice: 0 },
+      { id: 'f4', name: 'سمك حوت', emoji: '🐟', unit: 'kg', defaultPrice: 0 },
+      { id: 'f5', name: 'سمك وجمبري', emoji: '🦐', unit: 'kg', defaultPrice: 0 },
+      { id: 'f6', name: 'سدق', emoji: '🌭', unit: 'kg', defaultPrice: 0 },
+      { id: 'f7', name: 'سمنه', emoji: '🧈', unit: 'kg', defaultPrice: 0 },
+      { id: 'f8', name: 'فراخ', emoji: '🍗', unit: 'kg', defaultPrice: 0 }
     ]
   },
-  frozen: {
-    id: 'frozen', name: 'Frozen Food', emoji: '❄️', subtitle: 'Meats, Veggies & Ice Cream',
+  grocery: {
+    id: 'grocery', name: 'البقالة', emoji: '🛒', subtitle: 'أساسيات المطبخ',
     items: [
-      { id: 'mixed_veg', name: 'Mixed Farm Veggies', emoji: '🥦', unit: '400g Bag', defaultPrice: 28 },
-      { id: 'beef_burgers', name: 'Beef Burgers Patties', emoji: '🍔', unit: '8-Pack', defaultPrice: 145 },
-      { id: 'fries', name: 'Crispy French Fries', emoji: '🍟', unit: '1kg Bag', defaultPrice: 65 },
-      { id: 'chicken_tenders', name: 'Breaded Chicken Strips', emoji: '🍗', unit: '1kg Bag', defaultPrice: 185 },
-      { id: 'frozen_shrimp', name: 'Peeled Sea Shrimp', emoji: '🦐', unit: '500g Bag', defaultPrice: 240 },
-      { id: 'ice_cream', name: 'Family Ice Cream Tub', emoji: '🍨', unit: '1L Tub', defaultPrice: 85 }
+      { id: 'g1', name: 'لبن', emoji: '🥛', unit: 'لتر', defaultPrice: 0 },
+      { id: 'g2', name: 'براميلي', emoji: '🧀', unit: 'kg', defaultPrice: 0 },
+      { id: 'g3', name: 'تركي', emoji: '🧀', unit: 'kg', defaultPrice: 0 },
+      { id: 'g4', name: 'عسل اسود', emoji: '🍯', unit: 'برطمان', defaultPrice: 0 },
+      { id: 'g5', name: 'طحينه', emoji: '🥣', unit: 'برطمان', defaultPrice: 0 },
+      { id: 'g6', name: 'مربي', emoji: '🍓', unit: 'برطمان', defaultPrice: 0 },
+      { id: 'g7', name: 'ارز', emoji: '🍚', unit: 'kg', defaultPrice: 0 },
+      { id: 'g8', name: 'مكرونه', emoji: '🍝', unit: 'كيس', defaultPrice: 0 },
+      { id: 'g9', name: 'لبنة', emoji: '🥣', unit: 'علبة', defaultPrice: 0 },
+      { id: 'g10', name: 'بيض بلدي', emoji: '🥚', unit: 'كرتونة', defaultPrice: 0 },
+      { id: 'g10', name: 'بيض احمر', emoji: '🥚', unit: 'كرتونة', defaultPrice: 0 },
+      { id: 'g11', name: 'عيش', emoji: '🍞', unit: 'رغيف', defaultPrice: 0 },
+      { id: 'g12', name: 'زبادي', emoji: '🥣', unit: 'علبة', defaultPrice: 0 },
+      { id: 'g13', name: 'بسطرمة', emoji: '🥓', unit: 'kg', defaultPrice: 0 },
+      { id: 'g14', name: 'دقيق', emoji: '🌾', unit: 'kg', defaultPrice: 0 },
+      { id: 'g15', name: 'ملح', emoji: '🧂', unit: 'كيس', defaultPrice: 0 },
+      { id: 'g16', name: 'ارز بسمتي', emoji: '🍚', unit: 'kg', defaultPrice: 0 },
+      { id: 'g17', name: 'سكر', emoji: '🧊', unit: 'kg', defaultPrice: 0 },
+      { id: 'g18', name: 'زيت', emoji: '🫗', unit: 'زجاجة', defaultPrice: 0 },
+      { id: 'g19', name: 'خل', emoji: '🍶', unit: 'زجاجة', defaultPrice: 0 }
     ]
   },
   spices: {
-    id: 'spices', name: 'Spices & Herbs', emoji: '🌿', subtitle: 'Seasonings, Herbs & Seeds',
+    id: 'spices', name: 'العطارة', emoji: '🌿', subtitle: 'بهارات وأعشاب',
     items: [
-      { id: 'black_pepper', name: 'Ground Black Pepper', emoji: '🧂', unit: '100g Jar', defaultPrice: 45 },
-      { id: 'cumin', name: 'Ground Cumin', emoji: '🌱', unit: '100g Jar', defaultPrice: 35 },
-      { id: 'oregano', name: 'Dried Oregano Leaves', emoji: '🍃', unit: '50g Jar', defaultPrice: 30 },
-      { id: 'paprika', name: 'Sweet Smoked Paprika', emoji: '🌶️', unit: '80g Jar', defaultPrice: 40 },
-      { id: 'turmeric', name: 'Turmeric Powder', emoji: '🟡', unit: '100g Jar', defaultPrice: 35 },
-      { id: 'cinnamon', name: 'Cinnamon Bark Sticks', emoji: '🪵', unit: '100g Pack', defaultPrice: 50 }
+      { id: 's1', name: 'كمون', emoji: '🌱', unit: 'جرام', defaultPrice: 0 },
+      { id: 's2', name: 'فلفل', emoji: '🌶️', unit: 'جرام', defaultPrice: 0 },
+      { id: 's3', name: 'ملح', emoji: '🧂', unit: 'كيس', defaultPrice: 0 },
+      { id: 's4', name: 'بودره توم', emoji: '🧄', unit: 'جرام', defaultPrice: 0 },
+      { id: 's5', name: 'بودره بصل', emoji: '🧅', unit: 'جرام', defaultPrice: 0 },
+      { id: 's6', name: 'بابريكا مدخنة', emoji: '🌶️', unit: 'جرام', defaultPrice: 0 },
+      { id: 's7', name: 'سكر', emoji: '🧊', unit: 'kg', defaultPrice: 0 },
+      { id: 's8', name: 'خل', emoji: '🍶', unit: 'زجاجة', defaultPrice: 0 },
+      { id: 's9', name: 'جوزه الطيب', emoji: '🌰', unit: 'جرام', defaultPrice: 0 },
+      { id: 's10', name: 'مرقة فورية', emoji: '🍲', unit: 'مكعب', defaultPrice: 0 },
+      { id: 's11', name: 'بيكينج بودر', emoji: '🧁', unit: 'كيس', defaultPrice: 0 }
     ]
   },
-  cleaning: {
-    id: 'cleaning', name: 'Cleaning Supplies', emoji: '🧼', subtitle: 'Detergents, Soaps & Home Care',
+  vegetables: {
+    id: 'vegetables', name: 'الخضار', emoji: '🥬', subtitle: 'خضروات طازجة',
     items: [
-      { id: 'dish_soap', name: 'Concentrated Dish Soap', emoji: '🧴', unit: '1L Bottle', defaultPrice: 45 },
-      { id: 'laundry_gel', name: 'Automatic Laundry Gel', emoji: '🧺', unit: '2.5L Bottle', defaultPrice: 195 },
-      { id: 'bleach', name: 'Multi-Surface Bleach', emoji: '🫧', unit: '1L Bottle', defaultPrice: 32 },
-      { id: 'floor_cleaner', name: 'Floral Floor Cleaner', emoji: '🧹', unit: '1L Bottle', defaultPrice: 48 },
-      { id: 'sponges', name: 'Heavy Scrub Sponges', emoji: '🧽', unit: 'Pack of 3', defaultPrice: 25 },
-      { id: 'trash_bags', name: 'Heavy Trash Bags (70L)', emoji: '🗑️', unit: 'Roll (20 pcs)', defaultPrice: 55 }
+      { id: 'v1', name: 'طماطم', emoji: '🍅', unit: 'kg', defaultPrice: 0 },
+      { id: 'v2', name: 'خيار', emoji: '🥒', unit: 'kg', defaultPrice: 0 },
+      { id: 'v3', name: 'جزر', emoji: '🥕', unit: 'kg', defaultPrice: 0 },
+      { id: 'v4', name: 'بصل', emoji: '🧅', unit: 'kg', defaultPrice: 0 },
+      { id: 'v5', name: 'بطاطس', emoji: '🥔', unit: 'kg', defaultPrice: 0 },
+      { id: 'v6', name: 'خس', emoji: '🥬', unit: 'واحدة', defaultPrice: 0 },
+      { id: 'v7', name: 'بتنجان كبير', emoji: '🍆', unit: 'kg', defaultPrice: 0 },
+      { id: 'v8', name: 'كوسة', emoji: '🥒', unit: 'kg', defaultPrice: 0 },
+      { id: 'v9', name: 'فلفل الوان', emoji: '🫑', unit: 'kg', defaultPrice: 0 },
+      { id: 'v10', name: 'فلفل كوبي', emoji: '🫑', unit: 'kg', defaultPrice: 0 },
+      { id: 'v11', name: 'فلفل طويل اخضر', emoji: '🌶️', unit: 'kg', defaultPrice: 0 },
+      { id: 'v12', name: 'ملوخية', emoji: '🌿', unit: 'حزمة', defaultPrice: 0 }
     ]
   },
-  school: {
-    id: 'school', name: 'School Expenses', emoji: '📚', subtitle: 'Stationery, Books & School Care',
+  cleaning_supermarket: {
+    id: 'cleaning_supermarket', name: 'السوبر ماركت و منظفات', emoji: '🧼', subtitle: 'منظفات وطلبات السوبر ماركت',
     items: [
-      { id: 'notebooks', name: 'A4 Lined Notebooks', emoji: '📓', unit: 'Pack of 5', defaultPrice: 85 },
-      { id: 'pens_pack', name: 'Ballpoint Pens Set', emoji: '🖊️', unit: 'Pack of 10', defaultPrice: 55 },
-      { id: 'backpack', name: 'Water-Resistant Backpack', emoji: '🎒', unit: 'Piece', defaultPrice: 450 },
-      { id: 'art_supplies', name: 'Color Pencils & Sketchpad', emoji: '🎨', unit: 'Set', defaultPrice: 120 },
-      { id: 'geometry_kit', name: 'Precision Geometry Kit', emoji: '📐', unit: 'Metal Box', defaultPrice: 70 },
-      { id: 'organizer_folders', name: 'File Folders & Sleeves', emoji: '📁', unit: 'Pack of 10', defaultPrice: 40 }
+      { id: 'c1', name: 'فتح الله', emoji: '🏪', unit: 'طلب', defaultPrice: 0 },
+      { id: 'c2', name: 'فرجاني', emoji: '🏪', unit: 'طلب', defaultPrice: 0 },
+      { id: 'c3', name: 'بيم', emoji: '🏪', unit: 'طلب', defaultPrice: 0 },
+      { id: 'c4', name: 'زاهر', emoji: '🏪', unit: 'طلب', defaultPrice: 0 },
+      { id: 'c5', name: 'الاهرام', emoji: '🏪', unit: 'طلب', defaultPrice: 0 },
+      { id: 'c6', name: 'القزاز', emoji: '🏪', unit: 'طلب', defaultPrice: 0 },
+      { id: 'c7', name: 'مناديل سحب', emoji: '🧻', unit: 'علبة', defaultPrice: 0 },
+      { id: 'c8', name: 'صابون سايل', emoji: '🧴', unit: 'لتر', defaultPrice: 0 },
+      { id: 'c9', name: 'شاورجل', emoji: '🚿', unit: 'لتر', defaultPrice: 0 },
+      { id: 'c10', name: 'اوكسي جل', emoji: '🧺', unit: 'لتر', defaultPrice: 0 },
+      { id: 'c11', name: 'صابون تواليت', emoji: '🧼', unit: 'قطعة', defaultPrice: 0 },
+      { id: 'c12', name: 'مناديل جيب', emoji: '🤧', unit: 'باكت', defaultPrice: 0 },
+      { id: 'c13', name: 'مناديل رول مطبخ', emoji: '🧻', unit: 'رول', defaultPrice: 0 },
+      { id: 'c14', name: 'كلوروكس الوان', emoji: '🌈', unit: 'زجاجة', defaultPrice: 0 },
+      { id: 'c15', name: 'كلوروكس ابيض', emoji: '🫧', unit: 'زجاجة', defaultPrice: 0 },
+      { id: 'c16', name: 'معطر فريدا', emoji: '🌸', unit: 'زجاجة', defaultPrice: 0 },
+      { id: 'c17', name: 'اكياس قمامة', emoji: '🗑️', unit: 'بكرة', defaultPrice: 0 },
+      { id: 'c18', name: 'اكياس سندوتشات صغير', emoji: '🛍️', unit: 'رزمة', defaultPrice: 0 },
+      { id: 'c19', name: 'اكياس سندوتشات كبير', emoji: '🛍️', unit: 'رزمة', defaultPrice: 0 },
+      { id: 'c20', name: 'اكياس سندوتشات وسط', emoji: '🛍️', unit: 'رزمة', defaultPrice: 0 }
+    ]
+  },
+  repairs: {
+    id: 'repairs', name: 'التصليحات', emoji: '🛠️', subtitle: 'صيانة وتصليحات',
+    items: [
+      { id: 'r1', name: 'نجارة', emoji: '🪚', unit: 'خدمة', defaultPrice: 0 },
+      { id: 'r2', name: 'سباكة', emoji: '🔧', unit: 'خدمة', defaultPrice: 0 },
+      { id: 'r3', name: 'الوميتال', emoji: '🪟', unit: 'خدمة', defaultPrice: 0 },
+      { id: 'r4', name: 'الريسيفر', emoji: '📺', unit: 'خدمة', defaultPrice: 0 },
+      { id: 'r5', name: 'كهرباء', emoji: '⚡', unit: 'خدمة', defaultPrice: 0 }
+    ]
+  },
+  bills: {
+    id: 'bills', name: 'الفواتير', emoji: '🧾', subtitle: 'فواتير شهرية',
+    items: [
+      { id: 'b1', name: 'فاتوره كهرباء', emoji: '💡', unit: 'فاتورة', defaultPrice: 0 },
+      { id: 'b2', name: 'فاتوره المياه', emoji: '💧', unit: 'فاتورة', defaultPrice: 0 },
+      { id: 'b3', name: 'فاتوره الغاز', emoji: '🔥', unit: 'فاتورة', defaultPrice: 0 },
+      { id: 'b4', name: 'فاتوره الارضي', emoji: '☎️', unit: 'فاتورة', defaultPrice: 0 },
+      { id: 'b5', name: 'فاتوره النت', emoji: '🌐', unit: 'فاتورة', defaultPrice: 0 }
+    ]
+  },
+  transport: {
+    id: 'transport', name: 'مواصلات', emoji: '🚕', subtitle: 'انتقالات',
+    items: [
+      { id: 't1', name: 'مترو', emoji: '🚇', unit: 'تذكرة', defaultPrice: 0 },
+      { id: 't2', name: 'توكتوك', emoji: '🛺', unit: 'رحلة', defaultPrice: 0 },
+      { id: 't3', name: 'مكروباص', emoji: '🚐', unit: 'رحلة', defaultPrice: 0 }
+    ]
+  },
+  university: {
+    id: 'university', name: 'مصاريف جامعة', emoji: '🎓', subtitle: 'مصاريف دراسية',
+    items: [
+      { id: 'u1', name: 'اشتراك مترو', emoji: '🎟️', unit: 'اشتراك', defaultPrice: 0 },
+      { id: 'u2', name: 'اكل من برا', emoji: '🍔', unit: 'وجبة', defaultPrice: 0 },
+      { id: 'u3', name: 'مشروبات من برا', emoji: '☕', unit: 'مشروب', defaultPrice: 0 },
+      { id: 'u4', name: 'حاجه حلوه', emoji: '🍫', unit: 'قطعة', defaultPrice: 0 },
+      { id: 'u5', name: 'مايه', emoji: '💧', unit: 'زجاجة', defaultPrice: 0 },
+      { id: 'u6', name: 'توكتوك', emoji: '🛺', unit: 'رحلة', defaultPrice: 0 },
+      { id: 'u7', name: 'مكروباص', emoji: '🚐', unit: 'رحلة', defaultPrice: 0 },
+      { id: 'u8', name: 'تصوير ورق', emoji: '🖨️', unit: 'ورقة', defaultPrice: 0 },
+      { id: 'u9', name: 'اقلام', emoji: '🖊️', unit: 'قلم', defaultPrice: 0 },
+      { id: 'u10', name: 'كشكول', emoji: '📓', unit: 'كشكول', defaultPrice: 0 }
     ]
   }
 };
@@ -559,67 +641,125 @@ async function handleAddPersonalExpense() {
 // ADD REQUEST FORM (Shared)
 // ==========================================
 function initAddForm() {
-  const catSel = document.getElementById('sharedCategorySelect');
-  const itemInp = document.getElementById('sharedItemDropdown');
+  const itemInp = document.getElementById('sharedItemInput');
   const assignSel = document.getElementById('sharedAssignedToDropdown');
   const amtInp = document.getElementById('sharedAmountInput');
-  if (catSel) catSel.value = "";
+  const ddList = document.getElementById('sharedItemDropdownList');
+
   if (itemInp) {
-    itemInp.innerHTML = '<option value="" disabled selected>First select a category...</option>';
     itemInp.value = "";
-    itemInp.disabled = true;
+    itemInp.dataset.selectedId = "";
+    itemInp.dataset.customMode = "false";
   }
+  if (ddList) ddList.hidden = true;
   if (assignSel) assignSel.value = "";
   if (amtInp) amtInp.value = "";
+
+  // reset qty
+  state.quantityMode = 'count';
+  document.querySelectorAll('.qty-mode-btn').forEach(btn => btn.classList.remove('active'));
+  const defaultModeBtn = document.querySelector('.qty-mode-btn[data-mode="count"]');
+  if (defaultModeBtn) defaultModeBtn.classList.add('active');
+  document.querySelectorAll('.qty-input-section').forEach(sec => sec.hidden = true);
+  const countSec = document.getElementById('qtySectionCount');
+  if (countSec) countSec.hidden = false;
+
+  const stepper = document.getElementById('stepperValue');
+  if (stepper) stepper.value = 1;
+  const weight = document.getElementById('weightInput');
+  if (weight) weight.value = "";
+  const amountFixed = document.getElementById('amountFixedInput');
+  if (amountFixed) amountFixed.value = "";
+
+  const optPrice = document.getElementById('optionalPriceRow');
+  if (optPrice) optPrice.hidden = false;
+  const amtOnly = document.getElementById('amountOnlyAddRow');
+  if (amtOnly) amtOnly.hidden = true;
+  const helpTxt = document.getElementById('priceHelpText');
+  if (helpTxt) helpTxt.hidden = false;
 }
 
 async function handleSharedQuickAdd() {
-  const catSel = document.getElementById('sharedCategorySelect');
-  const itemInp = document.getElementById('sharedItemDropdown');
+  const itemInp = document.getElementById('sharedItemInput');
   const assignSel = document.getElementById('sharedAssignedToDropdown');
-  const amtInp = document.getElementById('sharedAmountInput');
 
-  const catId = catSel.value;
-  const itemId = itemInp.value;
+  const itemVal = itemInp.value.trim();
   const assignedTo = assignSel.value || null;
-  const price = parseFloat(amtInp.value);
+  const isCustom = itemInp.dataset.customMode === "true";
+  const itemId = itemInp.dataset.selectedId;
 
-  if (!catId || !itemId) {
-    showToast('Please select a category and an item.', 'error');
+  if (!itemVal && !itemId) {
+    showToast('Please enter an item.', 'error');
     return;
   }
 
-  const cat = CATALOG_DATA[catId];
-  if (!cat) return;
-  const item = cat.items.find(i => i.id === itemId);
-  if (!item) return;
+  let itemName = itemVal;
+  let itemEmoji = '📦'; // Default for custom
+  let itemUnit = 'Item';
+  let catId = 'other';
+  let catName = 'مختلف';
+  let catEmoji = '🔹';
+
+  if (!isCustom && itemId) {
+    for (const key in CATALOG_DATA) {
+      const found = CATALOG_DATA[key].items.find(i => i.id === itemId);
+      if (found) {
+        itemName = found.name;
+        itemEmoji = found.emoji;
+        itemUnit = found.unit || 'Item';
+        catId = CATALOG_DATA[key].id;
+        catName = CATALOG_DATA[key].name;
+        catEmoji = CATALOG_DATA[key].emoji;
+        break;
+      }
+    }
+  }
+
+  let finalQty = 1;
+  let finalUnit = itemUnit;
+  let price = 0;
+
+  if (state.quantityMode === 'count') {
+    finalQty = parseInt(document.getElementById('stepperValue').value) || 1;
+    price = parseFloat(document.getElementById('sharedAmountInput').value) || 0;
+  } else if (state.quantityMode === 'weight') {
+    finalQty = parseFloat(document.getElementById('weightInput').value) || 0;
+    if (finalQty <= 0) { showToast('Please enter a valid weight.', 'error'); return; }
+    finalUnit = 'kg';
+    price = parseFloat(document.getElementById('sharedAmountInput').value) || 0;
+  } else if (state.quantityMode === 'amount') {
+    finalQty = 1;
+    finalUnit = 'Fixed Amount';
+    price = parseFloat(document.getElementById('amountFixedInput').value) || 0;
+    if (price <= 0) { showToast('Please enter a valid amount.', 'error'); return; }
+  }
 
   const reqUser = state.currentUser;
   const data = {
     userId: reqUser.uid,
     userName: reqUser.name,
     userAvatar: reqUser.avatar,
-    categoryId: cat.id,
-    categoryName: cat.name,
-    categoryEmoji: cat.emoji,
-    itemName: item.name,
-    itemEmoji: item.emoji,
-    quantity: 1,
-    unit: item.unit || 'Item',
+    categoryId: catId,
+    categoryName: catName,
+    categoryEmoji: catEmoji,
+    itemName: itemName,
+    itemEmoji: itemEmoji,
+    quantity: finalQty,
+    unit: finalUnit,
     isDaily: false,
     assignedTo: assignedTo
   };
 
-  if (!isNaN(price) && price > 0) {
+  if (price > 0) {
     data.price = price;
     data.pricedBy = reqUser.uid;
   }
 
   await DB.addRequest(data);
-  showToast(`Added ${item.name} to Shared!`, 'success');
+  showToast(`Added ${itemName} to Shared!`, 'success');
   initAddForm();
 
-  if (!isNaN(price) && price > 0) {
+  if (price > 0) {
     await renderSharedDashboard(); // Update dashboard totals
   }
   await switchView('shared');
@@ -743,19 +883,111 @@ function initEvents() {
 
   // Add Form (Shared)
   document.getElementById('sharedAddBtn')?.addEventListener('click', handleSharedQuickAdd);
-  document.getElementById('sharedCategorySelect')?.addEventListener('change', (e) => {
-    const catId = e.target.value;
-    const dd = document.getElementById('sharedItemDropdown');
-    if (!catId || !dd) return;
+  document.getElementById('sharedAddBtnAmount')?.addEventListener('click', handleSharedQuickAdd);
 
-    const cat = CATALOG_DATA[catId];
-    if (!cat) return;
+  const itemInp = document.getElementById('sharedItemInput');
+  const ddList = document.getElementById('sharedItemDropdownList');
 
-    dd.innerHTML = `<option value="" disabled selected>Select an item...</option>`;
-    cat.items.forEach(i => {
-      dd.innerHTML += `<option value="${i.id}">${i.emoji} ${i.name} (${i.unit})</option>`;
+  if (itemInp && ddList) {
+    itemInp.addEventListener('input', (e) => {
+      const val = e.target.value.toLowerCase().trim();
+      ddList.innerHTML = '';
+      if (val === '') {
+        ddList.hidden = true;
+        itemInp.dataset.customMode = "false";
+        return;
+      }
+
+      let allItems = [];
+      Object.values(CATALOG_DATA).forEach(cat => {
+        allItems = allItems.concat(cat.items);
+      });
+
+      const filtered = allItems.filter(i => i.name.toLowerCase().includes(val));
+      if (filtered.length > 0) {
+        filtered.forEach(i => {
+          const div = document.createElement('div');
+          div.className = 'autocomplete-item';
+          div.innerHTML = `${i.emoji} ${i.name}`;
+          div.addEventListener('click', () => {
+            itemInp.value = i.name;
+            itemInp.dataset.selectedId = i.id;
+            itemInp.dataset.customMode = "false";
+            ddList.hidden = true;
+          });
+          ddList.appendChild(div);
+        });
+      } else {
+        const div = document.createElement('div');
+        div.className = 'autocomplete-item';
+        div.innerHTML = `➕ إضافة عنصر جديد: "<b>${val}</b>"`;
+        div.addEventListener('click', () => {
+          itemInp.dataset.selectedId = "";
+          itemInp.dataset.customMode = "true";
+          itemInp.value = val;
+          ddList.hidden = true;
+        });
+        ddList.appendChild(div);
+      }
+      ddList.hidden = false;
     });
-    dd.disabled = false;
+
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (e.target !== itemInp && e.target !== ddList) ddList.hidden = true;
+    });
+  }
+
+  // Quantity Mode Switcher
+  document.querySelectorAll('.qty-mode-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.qty-mode-btn').forEach(b => b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      const mode = e.currentTarget.getAttribute('data-mode');
+      state.quantityMode = mode;
+
+      document.querySelectorAll('.qty-input-section').forEach(sec => sec.hidden = true);
+      const optPrice = document.getElementById('optionalPriceRow');
+      const amtOnly = document.getElementById('amountOnlyAddRow');
+      const helpTxt = document.getElementById('priceHelpText');
+      if (optPrice) optPrice.hidden = false;
+      if (amtOnly) amtOnly.hidden = true;
+      if (helpTxt) helpTxt.hidden = false;
+
+      if (mode === 'count') {
+        const c = document.getElementById('qtySectionCount');
+        if (c) c.hidden = false;
+      } else if (mode === 'weight') {
+        const w = document.getElementById('qtySectionWeight');
+        if (w) w.hidden = false;
+      } else if (mode === 'amount') {
+        const a = document.getElementById('qtySectionAmount');
+        if (a) a.hidden = false;
+        if (optPrice) optPrice.hidden = true;
+        if (amtOnly) amtOnly.hidden = false;
+        if (helpTxt) helpTxt.hidden = true;
+      }
+    });
+  });
+
+  // Stepper
+  document.getElementById('stepperMinus')?.addEventListener('click', () => {
+    const inp = document.getElementById('stepperValue');
+    const val = parseInt(inp.value) || 1;
+    if (val > 1) inp.value = val - 1;
+  });
+  document.getElementById('stepperPlus')?.addEventListener('click', () => {
+    const inp = document.getElementById('stepperValue');
+    const val = parseInt(inp.value) || 1;
+    inp.value = val + 1;
+  });
+
+  // Fraction buttons
+  document.querySelectorAll('.fraction-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const inp = document.getElementById('weightInput');
+      if (inp) inp.value = e.currentTarget.getAttribute('data-val');
+    });
   });
 
   // Modal
